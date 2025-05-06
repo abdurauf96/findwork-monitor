@@ -1,0 +1,45 @@
+services:
+  php:
+    environment:
+      POSTGRES_DB: "${POSTGRES_DB}"
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      KORNET_CLIENT_API_URL: "${KORNET_CLIENT_API_URL}"
+      KORNET_ADMIN_API_URL: "${KORNET_ADMIN_API_URL}"
+      APP_URL: "${APP_URL}"
+      KORNET_API_TOKEN: "${KORNET_API_TOKEN}"
+    ports:
+      - "8181:80"
+    build:
+      context: .
+    restart: always
+    networks:
+      - monitor_network
+    volumes:
+      - "./etc/php/php.ini:/usr/local/etc/php/conf.d/php.ini"
+      - "./src:/app"
+  postgres-monitor:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    restart: always
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./data/postgres-data:/var/lib/postgresql/data
+    networks:
+      - monitor_network
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    ports:
+      - "5050:80"
+    networks:
+      - monitor_network
+networks:
+  monitor_network:
+    driver: bridge
