@@ -7,10 +7,22 @@ use App\Http\Controllers\SelectDatabaseController;
 use App\Http\Controllers\TableController;
 use App\Http\Middleware\EnsureDatabaseSelected;
 use App\Http\Middleware\SetDynamicDatabaseConnection;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return redirect()->route('login');
+});
+
+Route::get('/health', function (Request $request){
+    try {
+        // Check database connection
+        DB::connection()->getPdo();
+        return response()->json(['status' => 'ok'], 200);
+    } catch (\Exception $e) {
+        return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+    }
 });
 
 Route::middleware('guest')->group(function (){

@@ -32,12 +32,12 @@ return [
 
     'connections' => [
         'client' => [
-            'driver' => env('DB_CLIENT_DRIVER', 'pgsql '),
-            'host' => env('DB_CLIENT_HOST'),
-            'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_CLIENT_DATABASE'),
-            'username' => env('DB_CLIENT_USERNAME'),
-            'password' => env('DB_CLIENT_PASSWORD'),
+            'driver' => env('CLIENT_DB_DRIVER', 'pgsql '),
+            'host' => env('CLIENT_DB_HOST'),
+            'port' => env('CLIENT_DB_PORT', '3306'),
+            'database' => env('CLIENT_DB_DATABASE'),
+            'username' => env('CLIENT_DB_USERNAME'),
+            'password' => env('CLIENT_DB_PASSWORD'),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',
@@ -46,12 +46,12 @@ return [
         ],
 
         'admin' => [
-            'driver' => env('DB_ADMIN_DRIVER', 'pgsql '),
-            'host' => env('DB_ADMIN_HOST'),
-            'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_ADMIN_DATABASE'),
-            'username' => env('DB_ADMIN_USERNAME'),
-            'password' => env('DB_ADMIN_PASSWORD'),
+            'driver' => env('ADMIN_DB_DRIVER', 'pgsql '),
+            'host' => env('ADMIN_DB_HOST'),
+            'port' => env('ADMIN_DB_PORT', '3306'),
+            'database' => env('ADMIN_DB_DATABASE'),
+            'username' => env('ADMIN_DB_USERNAME'),
+            'password' => env('ADMIN_DB_PASSWORD'),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',
