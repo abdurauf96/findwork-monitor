@@ -1,0 +1,42 @@
+stages:
+  - build
+
+variables:
+  IMAGE_REGISTRY: registry.kornet.uz
+  IMAGE_NAME: kornet/kornet-monitor
+  DOCKER_TAG: staging$CI_COMMIT_SHORT_SHA
+  DOCKER_IMAGE: $IMAGE_REGISTRY/$IMAGE_NAME:$DOCKER_TAG
+
+build_staging:
+  stage: build
+  environment:
+    name: staging
+  only:
+    - staging  # Run this job only on the 'staging' branch
+  script:
+    - docker login $IMAGE_REGISTRY
+    - docker build -t $DOCKER_IMAGE .
+    - docker tag $DOCKER_IMAGE $IMAGE_REGISTRY/$IMAGE_NAME:staging
+    - docker push $DOCKER_IMAGE
+    - docker push $IMAGE_REGISTRY/$IMAGE_NAME:staging
+
+    - kubectl set image deployment/kornet-monitor kornet-monitor=$DOCKER_IMAGE -n staging
+
+build_production:
+  environment:
+    name: production
+  variables:
+    DOCKER_TAG: production$CI_COMMIT_SHORT_SHA
+  stage: build
+  only:
+    - production
+  script:
+    - docker login $IMAGE_REGISTRY
+    - docker build -t $DOCKER_IMAGE .
+    - docker tag $DOCKER_IMAGE $IMAGE_REGISTRY/$IMAGE_NAME:production
+    - docker push $DOCKER_IMAGE
+    - docker push $IMAGE_REGISTRY/$IMAGE_NAME:production
+
+    - kubectl set image deployment/kornet-monitor kornet-monitor=$DOCKER_IMAGE -n production
+    - kubectl rollout restart deployment/kornet-monitor -n production
+
