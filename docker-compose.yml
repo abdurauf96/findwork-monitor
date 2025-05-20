@@ -19,7 +19,7 @@ services:
       KORNET_CLIENT_API_URL: "${KORNET_CLIENT_API_URL}"
       KORNET_ADMIN_API_URL: "${KORNET_ADMIN_API_URL}"
       APP_URL: "${APP_URL}"
-      KORNET_API_TOKEN: "${KORNET_API_TOKEN}"
+      RETRY_JOB_API_TOKEN: "${RETRY_JOB_API_TOKEN}"
     ports:
       - "8181:80"
     build:
